@@ -89,6 +89,7 @@
                 id="exampleInputName"
                 name="name"
                 placeholder="Email"
+                value="{{ student.name }}"
               />
             </div>
             <div class="form-group">
@@ -116,11 +117,21 @@
             </div>
             <div class="form-group">
               <label for="">年龄</label>
-              <input class="form-control" type="number" name="age" />
+              <input
+                class="form-control"
+                type="number"
+                name="age"
+                value="{{ student.age }}"
+              />
             </div>
             <div class="form-group">
               <label for="">爱好</label>
-              <input class="form-control" type="text" name="hobbies" />
+              <input
+                class="form-control"
+                type="text"
+                name="hobbies"
+                value="{{ student.hobbies }}"
+              />
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
