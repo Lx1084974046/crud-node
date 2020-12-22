@@ -80,7 +80,8 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h2 class="sub-header">添加学生</h2>
-          <form action="/students/new" method="post">
+          <form action="/students/edit" method="post">
+            <input type="hidden" name="id" value="{{ student.id }}" />
             <div class="form-group">
               <label for="exampleInputName">姓名</label>
               <input
@@ -96,22 +97,12 @@
               <label for="">性别</label>
               <div>
                 <label class="radio-inline">
-                  <input
-                    type="radio"
-                    name="gender"
-                    id="inlineRadio1"
-                    value="0"
-                  />
-                  男
+                  <input type="radio" name="gender" id="inlineRadio1" value="0"
+                  {{ student.gender ==0 ? 'checked' :2 }} /> 男
                 </label>
                 <label class="radio-inline">
-                  <input
-                    type="radio"
-                    name="gender"
-                    id="inlineRadio2"
-                    value="1"
-                  />
-                  女
+                  <input type="radio" name="gender" id="inlineRadio2" value="1"
+                  {{ student.gender ==1 ? 'checked' :2 }} /> 女
                 </label>
               </div>
             </div>

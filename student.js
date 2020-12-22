@@ -27,7 +27,12 @@ exports.save = function (student, callback) {
       return callback(err);
     }
     var students = JSON.parse(data).students;
-    student.id = students[students.length - 1].id + 1; //处理id唯一不重复
+    if (students.length === 0) {
+      //当无用户数据时
+      student.id = 1;
+    } else {
+      student.id = students[students.length - 1].id + 1; //处理id唯一不重复
+    }
     //把用户传递的对象保存到数组中
     students.push(student);
     //对象数据转换为字符串
@@ -44,23 +49,71 @@ exports.save = function (student, callback) {
   });
 };
 
-exports.updateById = function (studentId, callback) {
-  //更新学生
+exports.findById = function (studentId, callback) {
+  //根据id获取学生信息对象
   fs.readFile(dbPath, "utf8", function (err, data) {
     if (err) {
       return callback(err);
     }
     var students = JSON.parse(data).students;
-    var student = null;
-    students.forEach((element) => {
-      if (element.id == studentId) {
-        student = element;
-      }
+    var student = students.find(function (element) {
+      return element.id == studentId;
     });
     callback(null, student);
   });
 };
 
-exports.delete = function () {
-  //删除学生
+exports.updateById = function (student, callback) {
+  fs.readFile(dbPath, "utf8", function (err, data) {
+    if (err) {
+      return callback(err);
+    }
+    var students = JSON.parse(data).students;
+
+    student.id = parseInt(student.id); //把id存为number
+
+    var stu = students.find(function (element) {
+      //根据id查询原数组中的对象 stu
+      return element.id == student.id;
+    });
+    //将用户更改的用户信息对象赋值给stu
+    for (var key in student) {
+      stu[key] = student[key];
+    }
+    //重新将数组转为字符串
+    var fileData = JSON.stringify({
+      students: students,
+    });
+    //把字符串保存到文件中
+    fs.writeFile(dbPath, fileData, function (err) {
+      if (err) {
+        return callback(err);
+      }
+      callback(null);
+    });
+  });
+};
+
+exports.deleteById = function (studentId, callback) {
+  //根据id删除学生
+  fs.readFile(dbPath, "utf8", function (err, data) {
+    if (err) {
+      return callback(err);
+    }
+    var students = JSON.parse(data).students;
+    var stuindex = students.findIndex(function (element) {
+      return element.id == studentId; //
+    });
+    students.splice(stuindex, 1);
+    var fileData = JSON.stringify({
+      students: students,
+    });
+    //把字符串保存到文件中
+    fs.writeFile(dbPath, fileData, function (err) {
+      if (err) {
+        return callback(err);
+      }
+      callback(null);
+    });
+  });
 };

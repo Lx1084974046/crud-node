@@ -17,7 +17,7 @@ router.get("/students", function (req, res) {
     // var students = JSON.parse(data).students; //从文件中读取到定数据一定是字符串  需要手动转换成对象
     res.render("index.html", {
       //使用模版引擎渲染页面
-      fruits: ["苹果", "橘子", "香蕉"], //模版数据
+      // fruits: ["苹果", "橘子", "香蕉"], //模版数据
       students: students,
     });
   });
@@ -37,7 +37,7 @@ router.post("/students/new", function (req, res) {
 });
 
 router.get("/students/edit", function (req, res) {
-  Student.updateById(req.query.id, function (err, student) {
+  Student.findById(req.query.id, function (err, student) {
     if (err) {
       return res.status(500).send("Server error.");
     }
@@ -46,7 +46,22 @@ router.get("/students/edit", function (req, res) {
     });
   });
 });
-router.post("/students/edit", function (req, res) {});
-router.get("/students/aelete", function (req, res) {});
+
+router.post("/students/edit", function (req, res) {
+  Student.updateById(req.body, function (err) {
+    if (err) {
+      return res.status(500).send("Server error.");
+    }
+    res.redirect("/students");
+  });
+});
+router.get("/students/delete", function (req, res) {
+  Student.deleteById(req.query.id, function (err) {
+    if (err) {
+      return res.status(500).send("Server error.");
+    }
+    res.redirect("/students");
+  });
+});
 
 module.exports = router;
