@@ -102,7 +102,7 @@ exports.deleteById = function (studentId, callback) {
     }
     var students = JSON.parse(data).students;
     var stuindex = students.findIndex(function (element) {
-      return element.id == studentId; //
+      return element.id == studentId; //查找条件
     });
     students.splice(stuindex, 1);
     var fileData = JSON.stringify({
